@@ -30,7 +30,7 @@ import com.playground.api.repositories.LeaveRepository;
 
 @RestController
 @RequestMapping("/api/leave")
-@CrossOrigin(origins = {"http://localhost:4200"})
+
 public class LeaveController {
 	
 	@Autowired
