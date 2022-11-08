@@ -105,10 +105,15 @@ public class LeaveController {
 
 	@GetMapping("/all-admin")
 	public List<LeaveDto> fetchPendingLeaves() {
+		List<Leave> leaves = new ArrayList<>();
+		try{
+
 		
-		List<Leave> leaves =  leaveRepository.findByStatusAndRecordStatus(
+		 leaves =  leaveRepository.findAllByStatusAndRecordStatus(
 			LeaveEnum.PENDING, RecordStatus.ACTIVE);
-			
+		}catch(Exception e)	{
+			System.out.println(e.getMessage());
+		}
 		/* Convert it to dto */
 		List<LeaveDto> listDto = LeaveDto.convertToDto(leaves);
 		
