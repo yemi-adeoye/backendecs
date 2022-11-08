@@ -109,7 +109,7 @@ public class LeaveController {
 		List<Leave> leaves;
 		try{
 			
-		List<Leave> leaves =  leaveRepository.getAllByStatusAndRecordStatus(
+		 leaves =  leaveRepository.getAllByStatusAndRecordStatus(
 			LeaveEnum.PENDING, RecordStatus.ACTIVE);
 		}catch(Exception e){
 			System.out.println(e.getMessage();
