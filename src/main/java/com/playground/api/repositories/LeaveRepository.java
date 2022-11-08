@@ -30,6 +30,6 @@ public interface LeaveRepository extends JpaRepository<Leave, Long>{
 	Employee getEmployeeByLeaveId(Long leaveID);
 
 	@Query("select l from Leave l where l.status=?1 and l.recordStatus=?2")
-    List<Leave> findByStatusAndRecordStatus(LeaveEnum pending, RecordStatus active);
+    List<Leave> findAllByStatusAndRecordStatus(LeaveEnum pending, RecordStatus active);
 
 }
