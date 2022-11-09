@@ -143,6 +143,9 @@ public class AdminController {
 		admin.setImageUrl(dto.getImageUrl());
 		admin.setJobTitle(dto.getJobTitle());
 
+		// SEND SIGNUP SUCCESS MAIL
+		this.mailService.sendSignUpMail(admin.getName(), user.getUsername());
+
 		adminRepository.save(admin);
 
 		ResponseDto responseDto = new ResponseDto();
@@ -381,7 +384,7 @@ public class AdminController {
 			mailService.sendHtmlMessage(fromEmail, user.getUsername(), "ACCESS GRANTED", body);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-		}
+		}	
 		
 		user.setRole(formerRole);
 		responseDto.setData(formerUser);
@@ -403,4 +406,6 @@ public class AdminController {
 		List<AdminDto> adminDtos = AdminDto.convertToListDto(admins);
 		return adminDtos;
 	}
+
+	
 }

@@ -136,7 +136,7 @@ import com.playground.api.repositories.TicketRepository;
 
 	@GetMapping("/all-admin")
 	public List<TicketDto> getAllTicketsStatus() {
-		
+		// get all pending tickets
 		List<Ticket> tickets = ticketRepository.findAllByStatus(TicketStatus.OPEN);
 		List<TicketDto> listDto = TicketDto.convertToListDto(tickets);
 		return listDto; 

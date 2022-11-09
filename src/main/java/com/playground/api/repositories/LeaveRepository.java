@@ -32,4 +32,5 @@ public interface LeaveRepository extends JpaRepository<Leave, Long>{
 	@Query("select l from Leave l where l.status=?1 and l.recordStatus=?2")
     List<Leave> getAllByStatusAndRecordStatus(LeaveEnum pending, RecordStatus active);
 
+
 }
