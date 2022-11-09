@@ -24,6 +24,7 @@ import com.playground.api.model.User;
 import com.playground.api.repositories.EmployeeRepository;
 import com.playground.api.repositories.ManagerRepository;
 import com.playground.api.repositories.UserRepository;
+import com.playground.api.service.MailService;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -40,6 +41,9 @@ public class EmployeeController {
 
 	@Autowired
 	private PasswordEncoder encoder;
+
+	@Autowired
+	private MailService mailService;
 
 	@Autowired
 	private ResponseDto responseDto;
@@ -102,6 +106,8 @@ public class EmployeeController {
 		employee.setCreatedOn(LocalDate.now());
 		employee.setManager(manager);
 		try {
+			// SEND SIGNUP SUCCESS MAIL
+		this.mailService.sendSignUpMail(employee.getName(), user.getUsername());
 			employeeRepository.save(employee);
 		} catch (Exception e) {
 			responseDto.setMsg("Something went wrong");
@@ -109,6 +115,7 @@ public class EmployeeController {
 					.status(HttpStatus.SERVICE_UNAVAILABLE)
 					.body(responseDto);
 		}
+		
 
 		responseDto.setMsg("Employee Record Added");
 

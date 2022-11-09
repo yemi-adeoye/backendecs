@@ -16,6 +16,9 @@ public class MailService {
 	@Autowired
 	private JavaMailSender emailSender;
 
+	@Autowired
+	org.springframework.core.env.Environment env;
+
 	public String sendMessage(String from, String to, String subject, String body) throws Exception {
 
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -57,6 +60,28 @@ public class MailService {
 		emailSender.send(message);
 
 		return "sent ok";
+	}
+
+	public void sendSignUpMail(String name, String email){
+		// send user mail
+		String baseUrl = env.getProperty("base_url");
+		String link = baseUrl + "login/";
+		String fromEmail = env.getProperty("from_email");
+
+		String body = "<strong style='font-size:1.4em;'>Dear " + name + ",</strong>";
+		body += "<h2 style='margin-bottom: 0;'>Welcome</h2><hr/>";
+		body += "<p style='font-size:1.4em; line-height: 2.5em;'>You've registered successfully. Your access request will be reviewed and you will get a mail granting or denying your request.<br />";
+		
+		body += "</b><br />If your request is granted you can login by clicking <a href="
+				+ link + "> here </a>, or by copying the url below into your browser's address bar.<br/>";
+		body += "<code>" + link + "</code></p>";
+
+		// send mail to the user granted access
+		try {
+			this.sendHtmlMessage(fromEmail, email, "SIGNUP SUCCESS", body);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private MimeMessageHelper setCustomIncedoFooter(MimeMessageHelper helper) {

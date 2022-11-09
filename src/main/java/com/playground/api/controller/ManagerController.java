@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +20,7 @@ import com.playground.api.model.Manager;
 import com.playground.api.model.User;
 import com.playground.api.repositories.ManagerRepository;
 import com.playground.api.repositories.UserRepository;
+import com.playground.api.service.MailService;
 
 @RestController
 @RequestMapping("/api/manager")
@@ -33,6 +33,9 @@ import com.playground.api.repositories.UserRepository;
 	
 	@Autowired
 	private PasswordEncoder encoder;
+
+	@Autowired
+	private MailService mailService;
 	
 	@PostMapping("/add")
 	public ResponseEntity<ResponseDto> addManager(@RequestBody SignUpDto dto, User user, Admin admin) {
@@ -45,7 +48,8 @@ import com.playground.api.repositories.UserRepository;
 		manager.setName(dto.getName());
 		manager.setImageUrl(dto.getImageUrl());
 		manager.setJobTitle(dto.getJobTitle());
-		
+		// SEND SIGNUP SUCCESS MAIL
+		this.mailService.sendSignUpMail(manager.getName(), user.getUsername());
 		managerRepository.save(manager);
 		ResponseDto responseDto = new ResponseDto();
 		responseDto.setData(manager);
